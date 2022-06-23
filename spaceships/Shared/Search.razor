@@ -1,0 +1,44 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@inject HttpClient Http
+@using spaceships.Data;
+@inject NavigationManager NavigationManager
+<h3>Search</h3>
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">SW</span>
+  </div>
+  <input type="text" placeholder="search for ships" @bind-value="@shipName" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+  <button class="btn btn-primary" @onclick="searchAPI">Search</button>
+</div>
+
+
+@if (shipResult == null)
+{
+    <p>Waiting for search...</p>
+}
+else
+{
+    <ul>
+        @foreach (var ship in shipResult.results)
+        {
+            <li><ShipComp ShipInformation=ship></ShipComp> </li>
+        }
+    </ul>
+}
+
+@code {
+    private string shipName;
+    private ShipResult shipResult;
+
+    public void RefreshPage() => NavigationManager.NavigateTo("refresh");
+
+    private async Task searchAPI()
+    {
+        string search = "https://swapi.dev/api/starships/?search=" + shipName;
+        shipResult = await Http.GetFromJsonAsync<ShipResult>(search);
+    }
+
+}

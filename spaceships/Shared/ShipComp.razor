@@ -1,0 +1,18 @@
+﻿@using spaceships.Data;
+
+<div class="card">
+  <div class="card-header">
+    @ShipInformation.name
+  </div>
+  <div class="card-body">
+    <p class="card-text">Cost(cr): @ShipInformation.cost_in_credits</p>
+    <p class="card-text">Manufacturer: @ShipInformation.manufacturer</p>
+    <p class="card-text">Crew: @ShipInformation.crew</p>
+  </div>
+</div>
+
+
+@code {
+    [Parameter] public Ships ShipInformation {get; set;}
+
+}
